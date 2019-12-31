@@ -12,6 +12,8 @@ class TokenType(Enum):
     KW_CLASS = "class"
     KW_HTML = "html"
     KW_HEAD = "head"
+    KW_BODY = "body"
+    KW_H1 = "h1"
 
     # <>
     L_ANGLE_BRACKETS = "<"

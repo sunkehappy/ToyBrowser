@@ -1,5 +1,5 @@
-from compiler.token import Token
-from compiler.token_type import TokenType
+from toybrowser.compiler.lexer.token import Token
+from toybrowser.compiler.lexer.token_type import TokenType
 from .identifier import Identifier
 
 
@@ -23,6 +23,7 @@ class Lexer:
     def advance(self, step=1):
         self.pos += step
         if self.pos >= len(self.text):
+            self.pos = 0
             self.line_number += 1
             self.column_number = 0
             if self.line_number < len(self.html_lines):
@@ -37,15 +38,18 @@ class Lexer:
         if not current_char:
             return Token(TokenType.EOF)
         elif current_char == '<':
+            self.advance()
             self.in_angle = True
             return Token(TokenType.L_ANGLE_BRACKETS)
         elif current_char == '/':
+            self.advance()
             return Token(TokenType.SLASH)
         elif current_char == '>':
+            self.advance()
             self.in_angle = False
             return Token(TokenType.R_ANGLE_BRACKETS)
         elif current_char == '"':
-            return  self.parse_string_in_quote()
+            return self.parse_string_in_quote()
         else:
             if self.in_angle:
                 return self.parse_identifier_and_keyword()
@@ -61,11 +65,12 @@ class Lexer:
             current_char = self.get_current_char()
         if Identifier.is_keyword(result):
             return Token(Identifier.keyword_type(result))
+        return Identifier(result)
 
     def eat_space(self):
         while self.get_current_char().isspace():
             self.advance()
--/84
+
     def parse_string_in_quote(self):
         # Eat left "
         self.advance()
@@ -87,8 +92,8 @@ class Lexer:
         current_char = self.get_current_char()
         while current_char and current_char != '<':
             result += current_char
-            current_char = self.get_current_char()
             self.advance()
-        if current_char != '"':
+            current_char = self.get_current_char()
+        if current_char != '<':
             raise Exception("Unclosed string in quote")
-        return result
+        return Identifier(result)
