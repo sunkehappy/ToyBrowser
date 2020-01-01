@@ -14,10 +14,15 @@ class TokenType(Enum):
     KW_HEAD = "head"
     KW_BODY = "body"
     KW_H1 = "h1"
+    KW_DIV = "div"
+    KW_P = "p"
+    KW_EM = "em"
 
     # <>
     L_ANGLE_BRACKETS = "<"
     R_ANGLE_BRACKETS = ">"
+
+    EQUAL = "="
 
     # /
     SLASH = "/"

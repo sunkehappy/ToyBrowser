@@ -16,7 +16,7 @@ class Lexer:
         self.in_angle = False
 
     def get_current_char(self):
-        if self.pos > len(self.text):
+        if self.line_number >= len(self.html_lines):
             return None
         return self.text[self.pos]
 
@@ -48,6 +48,9 @@ class Lexer:
             self.advance()
             self.in_angle = False
             return Token(TokenType.R_ANGLE_BRACKETS)
+        elif current_char == '=':
+            self.advance()
+            return Token(TokenType.EQUAL)
         elif current_char == '"':
             return self.parse_string_in_quote()
         else:
@@ -68,7 +71,7 @@ class Lexer:
         return Identifier(result)
 
     def eat_space(self):
-        while self.get_current_char().isspace():
+        while self.get_current_char() and self.get_current_char().isspace():
             self.advance()
 
     def parse_string_in_quote(self):
@@ -78,14 +81,14 @@ class Lexer:
         current_char = self.get_current_char()
         while current_char and current_char != '"':
             result += current_char
-            current_char = self.get_current_char()
             self.advance()
+            current_char = self.get_current_char()
         if current_char != '"':
             raise Exception("Unclosed string in quote")
         # Eat right "
         self.advance()
         # TODO string should be id or class name.
-        return result
+        return Identifier(result)
 
     def parse_string_between_tag(self):
         result = ""
