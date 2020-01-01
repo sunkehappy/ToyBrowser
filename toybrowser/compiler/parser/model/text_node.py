@@ -1,4 +1,4 @@
-from toybrowser.model import node, node_type
+from toybrowser.compiler.parser.model import node, node_type
 
 
 class TextNode(node.Node):
