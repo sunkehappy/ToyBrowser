@@ -40,10 +40,11 @@ class Lexer:
         elif current_char == '<':
             self.advance()
             self.in_angle = True
-            return Token(TokenType.L_ANGLE_BRACKETS)
-        elif current_char == '/':
-            self.advance()
-            return Token(TokenType.SLASH)
+            if self.get_current_char() == '/':
+                self.advance()
+                return Token(TokenType.L_END_ANGLE_BRACKETS)
+            else:
+                return Token(TokenType.L_START_ANGLE_BRACKETS)
         elif current_char == '>':
             self.advance()
             self.in_angle = False
