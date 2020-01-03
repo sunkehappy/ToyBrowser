@@ -9,8 +9,6 @@ class Identifier(Token):
         "body": TokenType.KW_BODY,
         "h1": TokenType.KW_H1,
         "div": TokenType.KW_DIV,
-        "id": TokenType.KW_ID,
-        "class": TokenType.KW_CLASS,
         "p": TokenType.KW_P,
         "em": TokenType.KW_EM,
     }

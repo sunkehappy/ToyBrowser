@@ -8,8 +8,6 @@ class TokenType(Enum):
 
 
     # 关键字
-    KW_ID = "id"
-    KW_CLASS = "class"
     KW_HTML = "html"
     KW_HEAD = "head"
     KW_BODY = "body"

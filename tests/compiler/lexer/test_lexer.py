@@ -7,7 +7,7 @@ from unittest import TestCase, TestSuite, TextTestRunner
 
 class LexerTest(TestCase):
     def setUp(self) -> None:
-        self.file = open("sample.html")
+        self.file = open("../../resources/sample.html")
         self.lexer = Lexer(self.file.readlines())
 
     def tearDown(self) -> None:
@@ -40,10 +40,10 @@ class LexerTest(TestCase):
         # test <div id="main" class="test">
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_DIV))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_ID))
+        self.assertEqual(self.lexer.get_next_token(), Identifier("id"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.EQUAL))
         self.assertEqual(self.lexer.get_next_token(), Identifier("main"))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_CLASS))
+        self.assertEqual(self.lexer.get_next_token(), Identifier("class"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.EQUAL))
         self.assertEqual(self.lexer.get_next_token(), Identifier("test"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))

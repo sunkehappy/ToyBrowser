@@ -22,6 +22,7 @@ class Lexer:
 
     def advance(self, step=1):
         self.pos += step
+        self.column_number += step
         if self.pos >= len(self.text):
             self.pos = 0
             self.line_number += 1
