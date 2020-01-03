@@ -1,6 +1,5 @@
 from toybrowser.compiler.lexer.lexer import Lexer
 from toybrowser.compiler.lexer.token import Token
-from toybrowser.compiler.lexer.identifier import Identifier
 from toybrowser.compiler.lexer.token_type import TokenType
 from unittest import TestCase, TestSuite, TextTestRunner
 
@@ -30,7 +29,7 @@ class LexerTest(TestCase):
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test "Title" in <h1></h1>
-        self.assertEqual(self.lexer.get_next_token(), Identifier("Title"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "Title"))
 
         # test </h1>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
@@ -40,27 +39,27 @@ class LexerTest(TestCase):
         # test <div id="main" class="test">
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_DIV))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("id"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "id"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.EQUAL))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("main"))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("class"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "main"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "class"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.EQUAL))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("test"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "test"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test <p>Hello <em>world</em>!</p>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_P))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("Hello "))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "Hello "))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_EM))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("world"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "world"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_EM))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Identifier("!"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "!"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_P))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))

@@ -1,6 +1,5 @@
 from toybrowser.compiler.lexer.token import Token
 from toybrowser.compiler.lexer.token_type import TokenType
-from .identifier import Identifier
 
 
 class Lexer:
@@ -68,9 +67,9 @@ class Lexer:
             result += current_char
             self.advance()
             current_char = self.get_current_char()
-        if Identifier.is_keyword(result):
-            return Token(Identifier.keyword_type(result))
-        return Identifier(result)
+        if Token.is_keyword(result):
+            return Token(Token.keyword_type(result))
+        return Token(TokenType.IDENTIFIER, result)
 
     def eat_space(self):
         while self.get_current_char() and self.get_current_char().isspace():
@@ -90,7 +89,7 @@ class Lexer:
         # Eat right "
         self.advance()
         # TODO string should be id or class name.
-        return Identifier(result)
+        return Token(TokenType.IDENTIFIER, result)
 
     def parse_string_between_tag(self):
         result = ""
@@ -101,4 +100,4 @@ class Lexer:
             current_char = self.get_current_char()
         if current_char != '<':
             raise Exception("Unclosed string in quote")
-        return Identifier(result)
+        return Token(TokenType.IDENTIFIER, result)

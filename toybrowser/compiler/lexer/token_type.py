@@ -3,11 +3,9 @@ from enum import Enum
 
 class TokenType(Enum):
     EOF = "EOF"
-
     IDENTIFIER = "IDENTIFIER"
 
-
-    # 关键字
+    # keyword
     KW_HTML = "html"
     KW_HEAD = "head"
     KW_BODY = "body"
@@ -16,9 +14,8 @@ class TokenType(Enum):
     KW_P = "p"
     KW_EM = "em"
 
-    # <>
+    # <> and </>
     L_START_ANGLE_BRACKETS = "<"
     L_END_ANGLE_BRACKETS = "</"
     R_ANGLE_BRACKETS = ">"
-
     EQUAL = "="
