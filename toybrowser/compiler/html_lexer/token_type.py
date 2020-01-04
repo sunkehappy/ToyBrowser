@@ -5,15 +5,6 @@ class TokenType(Enum):
     EOF = "EOF"
     IDENTIFIER = "IDENTIFIER"
 
-    # keyword
-    KW_HTML = "html"
-    KW_HEAD = "head"
-    KW_BODY = "body"
-    KW_H1 = "h1"
-    KW_DIV = "div"
-    KW_P = "p"
-    KW_EM = "em"
-
     # <> and </>
     L_START_ANGLE_BRACKETS = "<"
     L_END_ANGLE_BRACKETS = "</"

@@ -1,31 +1,33 @@
-from toybrowser.compiler.lexer.lexer import Lexer
-from toybrowser.compiler.lexer.token import Token
-from toybrowser.compiler.lexer.token_type import TokenType
+from toybrowser.compiler.html_lexer.lexer import Lexer
+from toybrowser.compiler.html_lexer.token import Token
+from toybrowser.compiler.html_lexer.token_type import TokenType
 from unittest import TestCase, TestSuite, TextTestRunner
 
 
 class LexerTest(TestCase):
     def setUp(self) -> None:
-        self.file = open("../../resources/sample.html")
-        self.lexer = Lexer(self.file.readlines())
+        self.html_file = open("../../resources/sample.html")
+        self.lexer = Lexer()
 
     def tearDown(self) -> None:
-        self.file.close()
+        self.html_file.close()
 
-    def test(self):
+    def testHTML(self):
+        self.lexer.init_with_content(self.html_file.readlines())
+
         # test <html>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_HTML))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "html"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test <body>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_BODY))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "body"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test <h1>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_H1))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "h1"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test "Title" in <h1></h1>
@@ -33,12 +35,12 @@ class LexerTest(TestCase):
 
         # test </h1>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_H1))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "h1"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test <div id="main" class="test">
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_DIV))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "div"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "id"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.EQUAL))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "main"))
@@ -49,34 +51,34 @@ class LexerTest(TestCase):
 
         # test <p>Hello <em>world</em>!</p>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_P))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "p"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "Hello "))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_START_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_EM))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "em"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "world"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_EM))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "em"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "!"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_P))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "p"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test </div>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_DIV))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "div"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test </body>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_BODY))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "body"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test </html>
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_END_ANGLE_BRACKETS))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_HTML))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "html"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_ANGLE_BRACKETS))
 
         # test EOF
@@ -85,7 +87,7 @@ class LexerTest(TestCase):
 
 if __name__ == '__main__':
     suite = TestSuite()
-    suite.addTest(LexerTest('test'))
+    suite.addTest(LexerTest('testHTML'))
     # 执行测试
     runner = TextTestRunner()
     runner.run(suite)

@@ -1,6 +1,6 @@
-from toybrowser.compiler.lexer.lexer import Lexer
-from toybrowser.compiler.lexer.token_type import TokenType
-from toybrowser.compiler.parser.model.element_node import ElementNode
+from toybrowser.compiler.html_lexer.lexer import Lexer
+from toybrowser.compiler.html_lexer.token_type import TokenType
+from toybrowser.compiler.html_parser.model.element_node import ElementNode
 from .model.text_node import TextNode
 
 
@@ -30,10 +30,10 @@ class Parser:
     def parse_attributes(self):
         result = {}
         while self.current_token.type != TokenType.R_ANGLE_BRACKETS:
-            key = self.current_token.name
+            key = self.current_token.value
             self.eat(TokenType.IDENTIFIER)
             self.eat(TokenType.EQUAL)
-            value = self.current_token.name
+            value = self.current_token.value
             self.eat(TokenType.IDENTIFIER)
             result[key] = value
         return result
@@ -41,6 +41,7 @@ class Parser:
     def parse_single_node(self):
         self.eat(TokenType.L_START_ANGLE_BRACKETS)
         current_tag_type = self.current_token.type
+        current_tag_value = self.current_token.value
         self.eat(current_tag_type)
 
         attributes = self.parse_attributes()
@@ -52,10 +53,10 @@ class Parser:
             if self.current_token.type == TokenType.L_START_ANGLE_BRACKETS:
                 nodes.append(self.parse_single_node())
             elif self.current_token.type == TokenType.IDENTIFIER:
-                token_name = self.current_token.name
+                token_name = self.current_token.value
                 self.eat(TokenType.IDENTIFIER)
                 nodes.append(TextNode(token_name))
         self.eat(TokenType.L_END_ANGLE_BRACKETS)
         self.eat(current_tag_type)
         self.eat(TokenType.R_ANGLE_BRACKETS)
-        return ElementNode(nodes, current_tag_type.value, attributes)
+        return ElementNode(nodes, current_tag_value, attributes)

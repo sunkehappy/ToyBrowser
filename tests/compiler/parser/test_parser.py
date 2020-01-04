@@ -1,7 +1,7 @@
-from toybrowser.compiler.lexer.lexer import Lexer
-from toybrowser.compiler.parser.parser import Parser
-from toybrowser.compiler.parser.model.text_node import TextNode
-from toybrowser.compiler.parser.model.element_node import ElementNode
+from toybrowser.compiler.html_lexer.lexer import Lexer
+from toybrowser.compiler.html_parser.parser import Parser
+from toybrowser.compiler.html_parser.model.text_node import TextNode
+from toybrowser.compiler.html_parser.model.element_node import ElementNode
 from unittest import TestCase, TestSuite, TextTestRunner
 
 

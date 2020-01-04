@@ -1,21 +1,25 @@
-from toybrowser.compiler.lexer.token import Token
-from toybrowser.compiler.lexer.token_type import TokenType
+from toybrowser.compiler.html_lexer.token import Token
+from toybrowser.compiler.html_lexer.token_type import TokenType
 
 
 class Lexer:
-    def __init__(self, html_lines):
+    def __init__(self, lines=()):
+        self.init_with_content(lines)
+
+    def init_with_content(self, lines):
+        self.lines = lines
+        self.text = lines[0] if len(lines) > 0 else ""
+        self.init_variables()
+
+    def init_variables(self):
         self.pos = 0
-        self.html_lines = html_lines
-        self.text = html_lines[0] if len(html_lines) > 0 else ""
         self.line_number = 0
         self.column_number = 0
-        # Depth are used to extract string in like <p></p>
-        self.depth = 0
         # String in angle or out of angle are parsed using different rules.
         self.in_angle = False
 
     def get_current_char(self):
-        if self.line_number >= len(self.html_lines):
+        if self.line_number >= len(self.lines):
             return None
         return self.text[self.pos]
 
@@ -26,8 +30,8 @@ class Lexer:
             self.pos = 0
             self.line_number += 1
             self.column_number = 0
-            if self.line_number < len(self.html_lines):
-                self.text = self.html_lines[self.line_number]
+            if self.line_number < len(self.lines):
+                self.text = self.lines[self.line_number]
 
     def get_next_token(self):
         self.eat_space()
@@ -67,8 +71,6 @@ class Lexer:
             result += current_char
             self.advance()
             current_char = self.get_current_char()
-        if Token.is_keyword(result):
-            return Token(Token.keyword_type(result))
         return Token(TokenType.IDENTIFIER, result)
 
     def eat_space(self):
