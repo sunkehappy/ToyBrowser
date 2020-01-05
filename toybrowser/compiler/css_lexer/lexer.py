@@ -72,7 +72,7 @@ class Lexer:
     def parse_string(self):
         result = ""
         current_char = self.get_current_char()
-        while current_char and current_char.isalnum() or current_char in "_-":
+        while current_char and current_char.isalnum() or current_char in "_-.":
             result += current_char
             self.advance()
             current_char = self.get_current_char()

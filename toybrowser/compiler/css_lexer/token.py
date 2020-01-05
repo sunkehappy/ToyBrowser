@@ -10,7 +10,10 @@ class Token:
         return self.type == other.type and self.value == other.value
 
     def __str__(self):
-        return "Token({}, {})".format(self.type.value, self.value)
+        if self.value:
+            return "Token({}, {})".format(self.type.name, self.value)
+        else:
+            return "Token({})".format(self.type.name)
 
     def __repr__(self):
-        return "Token({}, {})".format(self.type.value, self.value)
+        return self.__str__()

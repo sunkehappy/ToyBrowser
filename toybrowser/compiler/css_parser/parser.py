@@ -3,6 +3,7 @@ from toybrowser.compiler.css_lexer.token_type import TokenType
 from .model.selector import Selector
 from .model.declaration import Declaration
 from .model.css_rule import CSSRule
+from .model.color import Color
 
 
 class Parser:
@@ -54,17 +55,32 @@ class Parser:
         return selectors
 
     def parse_declarations(self):
+        self.eat(TokenType.L_BRACE)
         declarations = []
         while self.current_token.type != TokenType.R_BRACE:
             declarations.append(self.parse_single_declaration())
+        self.eat(TokenType.R_BRACE)
         return declarations
+
+    def parse_single_value(self):
+        # A color value
+        if self.current_token.type == TokenType.KW_SHARP:
+            self.eat(TokenType.KW_SHARP)
+            value = self.current_token.value
+            self.eat(self.current_token.type)
+            return Color(hex_str=value)
+        else:
+            values = []
+            while self.current_token.type != TokenType.SEMICOLON:
+                values.append(self.current_token.value)
+                self.eat(self.current_token.type)
+            return values
 
     def parse_single_declaration(self):
         name = self.current_token.value
         self.eat(TokenType.IDENTIFIER)
         self.eat(TokenType.COLON)
-        value = self.current_token.value
-        self.eat(TokenType.IDENTIFIER)
+        value = self.parse_single_value()
         self.eat(TokenType.SEMICOLON)
         return Declaration(name, value)
 

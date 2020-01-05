@@ -1,7 +1,9 @@
-from toybrowser.compiler.html_lexer.lexer import Lexer
-from toybrowser.compiler.html_parser.parser import Parser
-from toybrowser.compiler.html_parser.model.text_node import TextNode
-from toybrowser.compiler.html_parser.model.element_node import ElementNode
+from toybrowser.compiler.css_lexer.lexer import Lexer
+from toybrowser.compiler.css_parser.parser import Parser
+from toybrowser.compiler.css_parser.model.css_rule import CSSRule
+from toybrowser.compiler.css_parser.model.selector import Selector
+from toybrowser.compiler.css_parser.model.declaration import Declaration
+from toybrowser.compiler.css_parser.model.color import Color
 from unittest import TestCase, TestSuite, TextTestRunner
 
 
@@ -15,22 +17,19 @@ class LexerTest(TestCase):
         self.file.close()
 
     def test(self):
-        text_node = TextNode("world")
-        em = ElementNode(children=[text_node], tag_name="em")
-        text_node1 = TextNode("Hello ")
-        text_node2 = TextNode("!")
-        p = ElementNode(children=[text_node1, em, text_node2], tag_name="p")
-        attributes = {
-            "id": "main",
-            "class": "test",
-        }
-        div = ElementNode([p], "div", attributes)
-        text_node = TextNode("Title")
-        h1 = ElementNode([text_node], "h1")
-        body = ElementNode([h1, div], "body")
-        html = ElementNode([body], "html")
+        selectors = [Selector(tag_name="h1"), Selector(tag_name="h2"), Selector(tag_name="h3")]
+        declarations = [Declaration("margin", ["auto"]), Declaration("color", Color(hex_str="#cc0000"))]
+        rules = [CSSRule(selectors, declarations)]
 
-        self.assertEqual(html, self.parser.parse())
+        selectors = [Selector(tag_name="div.note")]
+        declarations = [Declaration("margin-bottom", ["20px"]), Declaration("padding", ["10px"])]
+        rules.append(CSSRule(selectors, declarations))
+
+        selectors = [Selector(id="answer")]
+        declarations = [Declaration("display", ["none"])]
+        rules.append(CSSRule(selectors, declarations))
+
+        self.assertEqual(rules, self.parser.parse())
 
 
 if __name__ == '__main__':
