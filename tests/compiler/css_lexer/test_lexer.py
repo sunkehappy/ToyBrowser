@@ -33,10 +33,9 @@ class LexerTest(TestCase):
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.SEMICOLON))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_BRACE))
 
-        # Test div.note { margin-bottom: 20px; padding: 10px; }
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "div"))
+        # Test .author { margin-bottom: 20px; padding: 10px; }
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_DOT))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "note"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "author"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_BRACE))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "margin-bottom"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.COLON))
@@ -48,13 +47,13 @@ class LexerTest(TestCase):
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.SEMICOLON))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_BRACE))
 
-        # Test #answer { display: none; }
+        # Test #hello-world { color: red; }
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.KW_SHARP))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "answer"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "hello-world"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.L_BRACE))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "display"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "color"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.COLON))
-        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "none"))
+        self.assertEqual(self.lexer.get_next_token(), Token(TokenType.IDENTIFIER, "red"))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.SEMICOLON))
         self.assertEqual(self.lexer.get_next_token(), Token(TokenType.R_BRACE))
 

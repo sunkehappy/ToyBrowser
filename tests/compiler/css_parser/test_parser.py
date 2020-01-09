@@ -21,12 +21,12 @@ class LexerTest(TestCase):
         declarations = [Declaration("margin", ["auto"]), Declaration("color", Color(hex_str="#cc0000"))]
         rules = [CSSRule(selectors, declarations)]
 
-        selectors = [Selector(tag_name="div.note")]
+        selectors = [Selector(classes="author")]
         declarations = [Declaration("margin-bottom", ["20px"]), Declaration("padding", ["10px"])]
         rules.append(CSSRule(selectors, declarations))
 
-        selectors = [Selector(id="answer")]
-        declarations = [Declaration("display", ["none"])]
+        selectors = [Selector(id="hello-world")]
+        declarations = [Declaration("color", ["red"])]
         rules.append(CSSRule(selectors, declarations))
 
         self.assertEqual(rules, self.parser.parse())

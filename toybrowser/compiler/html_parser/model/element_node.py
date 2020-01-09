@@ -11,6 +11,12 @@ class ElementNode(Node):
         self.tag_name = tag_name
         self.attributes = attributes
 
+    def id(self):
+        return self.attributes.get("id", None)
+
+    def classes(self):
+        return self.attributes.get("class", None)
+
     def __eq__(self, other):
         if other is None:
             return False
