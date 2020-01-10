@@ -102,4 +102,4 @@ class Lexer:
             current_char = self.get_current_char()
         if current_char != '<':
             raise Exception("Unclosed string in quote")
-        return Token(TokenType.IDENTIFIER, result)
+        return Token(TokenType.IDENTIFIER, result.strip())

@@ -11,6 +11,12 @@ class ElementNode(Node):
         self.tag_name = tag_name
         self.attributes = attributes
 
+    def id(self):
+        return self.attributes.get("id", None)
+
+    def classes(self):
+        return self.attributes.get("class", None)
+
     def __eq__(self, other):
         if other is None:
             return False
@@ -18,7 +24,7 @@ class ElementNode(Node):
         return eq and self.tag_name == other.tag_name and self.attributes == other.attributes
 
     def __str__(self):
-        return "tag:{}, attributes:{}, children:{}".format(self.tag_name, self.attributes, self.children)
+        return "ElementNode(tag:{}, attributes:{}, children:{})\n".format(self.tag_name, self.attributes, self.children)
 
     def __repr__(self):
-        return "tag:{}, attributes:{}, children:{}".format(self.tag_name, self.attributes, self.children)
+        return self.__str__()

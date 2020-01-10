@@ -15,19 +15,23 @@ class LexerTest(TestCase):
         self.file.close()
 
     def test(self):
-        text_node = TextNode("world")
-        em = ElementNode(children=[text_node], tag_name="em")
-        text_node1 = TextNode("Hello ")
-        text_node2 = TextNode("!")
-        p = ElementNode(children=[text_node1, em, text_node2], tag_name="p")
+        text_node = TextNode("Hello world!")
+        p = ElementNode(children=[text_node], tag_name="p")
         attributes = {
-            "id": "main",
-            "class": "test",
+            "id": "hello-world",
         }
-        div = ElementNode([p], "div", attributes)
+        div1 = ElementNode([p], "div", attributes)
+
         text_node = TextNode("Title")
         h1 = ElementNode([text_node], "h1")
-        body = ElementNode([h1, div], "body")
+
+        text_node = TextNode("From a happy toy browser.")
+        attributes = {
+            "class": "author",
+        }
+        div2 = ElementNode([text_node], "div", attributes)
+
+        body = ElementNode([h1, div1, div2], "body")
         html = ElementNode([body], "html")
 
         self.assertEqual(html, self.parser.parse())
