@@ -2,13 +2,19 @@ from .box_type import BoxType
 
 
 class LayoutBox:
-    def __init__(self, dimension=None, box_type=BoxType.Block, children=()):
+    def __init__(self, styled_node=None, dimension=None, box_type=BoxType.Block, children=()):
+        self.styled_node = styled_node
         self.dimension = dimension
         self.box_type = box_type
         self.children = children
 
     def get_inline_container(self):
-        
+        if self.box_type == BoxType.Inline or self.box_type == BoxType.Anonymous:
+            return self
+        elif self.box_type == BoxType.Anonymous:
+            if self.children[-1].box_type != BoxType.Anonymous:
+                self.children.append(LayoutBox(box_type=BoxType.Anonymous))
+            return self.children[-1]
 
     def __eq__(self, other):
         if other is None:

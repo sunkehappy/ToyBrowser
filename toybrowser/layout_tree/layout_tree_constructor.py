@@ -1,13 +1,13 @@
 from .layout_box import LayoutBox
-from .display_type import DisplayType
+from .box_type import BoxType
 
 
 class LayoutTreeConstructor:
-    def build_tree(self, style_tree):
-        root = LayoutBox(box_type=style_tree.display())
-        for styled_node in style_tree.children:
-            if styled_node.display() == DisplayType.Flex:
-                root.children.append(self.build_tree(styled_node))
-            elif styled_node.display() == DisplayType.InlineFlex:
-                root.get_inline_container().children.append(self.build_tree(styled_node))
 
+    def build_tree(self, styled_node):
+        root = LayoutBox(styled_node, box_type=styled_node.display())
+        for child in styled_node.children:
+            if child.display() == BoxType.Block:
+                root.children.append(LayoutBox(child, box_type=child.display()))
+            elif child.display() == BoxType.Inline:
+                return root.get_inline_container().children.append(LayoutBox(child, box_type=child.display()))

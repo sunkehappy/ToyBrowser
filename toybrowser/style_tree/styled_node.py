@@ -1,3 +1,6 @@
+from ..layout_tree.box_type import BoxType
+
+
 class StyledNode:
     def __init__(self, node, css_map=None, children=()):
         if css_map is None:
@@ -7,6 +10,15 @@ class StyledNode:
         self.node = node
         self.css_map=css_map
         self.children = children
+
+    def display(self):
+        display_value = self.css_map.get("display", None)
+        if display_value == "block":
+            return BoxType.Block
+        elif display_value == "inline":
+            return BoxType.Inline
+        else:
+            raise Exception("unexpected display value:{}".format(display_value))
 
     def __eq__(self, other):
         if other is None:
